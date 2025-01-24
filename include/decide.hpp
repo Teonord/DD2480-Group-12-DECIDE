@@ -13,6 +13,9 @@ typedef enum { LT=1111, EQ, GT } Comptype;
 
 // Struct for inputs to DECIDE. 
 typedef struct {
+    int NUMPOINTS;      // Number of points
+    double *X;          // X Coordinates of data points
+    double *Y;          // Y Coordinates of data points
     double LENGTH1;     // Lenth in LICs 0, 7, 12
     double RADIUS1;     // Radius in LICs 1, 8, 13
     double EPSILON;     // Deviation from PI in LICs 2, 9
@@ -33,33 +36,6 @@ typedef struct {
     double RADIUS2;     // Max radius in LIC 13
     double AREA2;       // Max area in LIC 14
 } Parameters_t;
-
-// Input parameters
-static Parameters_t parameters;
-
-// Number of points
-static int numpoints;
-
-// X Coordinates of data points
-static double *x;
-
-// Y Coordinates of data points
-static double *y;
-
-// Logical Connector Matrix (LCM) 15*15
-static Connectors **lcm;
-
-// Preliminary Unlocking Matrix (PUM) 15*15
-static bool **pum;
-
-// Conditions Met Vector (CMV) 15
-static bool *cmv;
-
-// Final Unlocking Vector (FUV) 15
-static bool *fuv;
-
-// Launch Decision
-static bool launch;
 
 // Compare floating point numbers
 Comptype doubleCompare (double a, double b);
