@@ -1,12 +1,45 @@
 #include "../include/decide.hpp"
 
+ /**
+ * Compares two double values with a precision tolerance.
+ *
+ * This function compares two double values `a` and `b` to determine their
+ * relative difference within a specified precision tolerance of 0.000001.
+ * It returns EQ if the values are nearly equal, LT if `a` is less than `b`,
+ * and GT if `a` is greater than `b`.
+ *
+ * @param a First double value to compare.
+ * @param b Second double value to compare.
+ * @return CompType Comparison result: EQ, LT, or GT.
+ */
 Comptype doubleCompare (double a, double b) {
     if (fabs(a-b) < 0.000001) return EQ;
     if (a < b) return LT;
     return GT;
 }
 
-// LIC 0
+/* LIC 0
+/*
+ * Checks if there are two consecutive points with a distance greater than LENGTH1.
+ *
+ * This function iterates through the given points and checks if any two consecutive
+ * points have a distance between them that is greater than the specified LENGTH1.
+ * It returns true if such a pair of points is found, and false otherwise.
+ *
+ * @param params Parameters_t structure containing the number of points, their coordinates, and LENGTH1.
+ * @return bool True if there are two consecutive points with a distance greater than LENGTH1, false otherwise.
+ */
+bool isConsecDistGTLen(Parameters_t params){
+    if(params.NUMPOINTS < 2 || params.LENGTH1 < 0) return false;
+
+    for(int i = 0; i < params.NUMPOINTS - 1; i++){
+        //pythagoran theorem
+        double distance = sqrt(pow(params.X[i+1] - params.X[i], 2) + pow(params.Y[i+1] - params.Y[i], 2));
+        if(doubleCompare(distance, params.LENGTH1) == GT) return true;
+    }
+
+    return false;
+}
 
 // LIC 1
 
