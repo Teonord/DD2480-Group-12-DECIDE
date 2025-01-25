@@ -33,7 +33,7 @@ bool isDistFromLine(Parameters_t params) {
         if (doubleCompare(params.X[i], params.X[i+params.N_PTS-1]) == EQ && doubleCompare(params.Y[i], params.Y[i+params.N_PTS-1]) == EQ) {
             for(int j = i + 1; j < i + params.N_PTS - 1; j++) {
                 // Pythagorean Theorem 
-                double distance = fsqrt(pow(params.X[j] - params.X[i], 2) + pow(params.Y[j] - params.Y[i], 2));
+                double distance = sqrt(pow(params.X[j] - params.X[i], 2) + pow(params.Y[j] - params.Y[i], 2));
                 
                 if (doubleCompare(distance, params.DIST) == GT) return true;
             }
