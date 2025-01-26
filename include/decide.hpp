@@ -49,5 +49,7 @@ bool isConsecDistGTLen(Parameters_t params);
 // LIC 6
 bool isDistFromLine(Parameters_t params);
 
+// LIC 8
+bool sepPointsContainedInCircle(Parameters_t params);
 
 #endif

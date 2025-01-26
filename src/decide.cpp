@@ -1,4 +1,5 @@
 #include "../include/decide.hpp"
+#include <iostream>
 
  /**
  * Compares two double values with a precision tolerance.
@@ -89,7 +90,66 @@ bool isDistFromLine(Parameters_t params) {
 
 // LIC 7
 
-// LIC 8
+/* LIC 8
+ *
+ * This code solves LIC 8, which is true if there is at least one set of three data points (with separation
+ * A_PTS between 1 and 2 and B_PTS between 2 and 3) where all three points do not fit within a circle of radius
+ * RADIUS1. First checks easy distances, if a distance is further than RADIUS1 * 2 we know that they can't fit.
+ * Then we check distances from midpoint of the longest hypotenuse. If the point that this hypotenuse is not
+ * connected to is further than RADIUS1 from the midpoint, we finally check the Circumradius to find the circle
+ * which is on all 3 of the points. This is why the second check has to be done, as too close points would lead
+ * to a far too large circle. Here, if the circumradius is larger than RADIUS1 we know they cannot be contained
+ * within a circle of RADIUS1.
+ */
+bool sepPointsContainedInCircle(Parameters_t params) {
+    // Base Cases (implicitly returns false if NUMPOINTS < 5)
+    if (params.A_PTS < 1 || params.B_PTS < 1 || params.A_PTS + params.B_PTS > params.NUMPOINTS - 3) return false;
+    
+    for (int i = 0; i < params.NUMPOINTS - params.A_PTS - params.B_PTS - 2; i++) {
+        double ax = params.X[i];
+        double bx = params.X[i+params.A_PTS+1];
+        double cx = params.X[i+params.A_PTS+params.B_PTS+2];
+        double ay = params.Y[i];
+        double by = params.Y[i+params.A_PTS+1];
+        double cy = params.Y[i+params.A_PTS+params.B_PTS+2];
+
+        // Make a triangle
+        double ab = hypot(bx - ax, by - ay);
+        double ac = hypot(cx - ax, cy - ay);
+        double bc = hypot(cx - bx, cy - by);
+        // If distance between two points is longer than diameter, cannot be kept within circle of radius RADIUS1
+        if(ab > params.RADIUS1 * 2 || ac > params.RADIUS1 * 2 || bc > params.RADIUS1 * 2) return true;
+        
+        // Check if distance between midpoints of longest side and the remaining point is within RADIUS1  
+        double dist;
+        if(ab > ac && ab > bc) {
+            double nx = (ax + bx) / 2;
+            double ny = (ay + by) / 2;
+            dist = hypot(cx - nx, cy - ny);
+        } else if (ac > ab && ac > bc) {
+            double nx = (ax + cx) / 2;
+            double ny = (ay + cy) / 2;
+            dist = hypot(bx - nx, by - ny);
+        } else {
+            double nx = (bx + cx) / 2;
+            double ny = (by + cy) / 2;
+            dist = hypot(ax - nx, ay - ny);
+        }
+        if (doubleCompare(dist, params.RADIUS1) != GT) continue;
+
+        // Calculate Circumradius 
+        // https://artofproblemsolving.com/wiki/index.php/Circumradius
+        // https://www.cuemath.com/geometry/area-of-triangle-in-coordinate-geometry/
+        double area = fabs(ax * (by-cy) + bx * (cy-ay) + cx * (ay-by)) / 2;
+        if (doubleCompare(area, 0) == EQ) continue;
+        double circumradius = (ab * bc * ac) / (4 * area);
+
+        if (doubleCompare(circumradius, params.RADIUS1) == GT) return true;
+    }
+
+    // If nothing was found
+    return false;
+}
 
 // LIC 9
 

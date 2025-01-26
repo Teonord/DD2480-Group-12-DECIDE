@@ -185,3 +185,75 @@ TEST_CASE("line w/ negative doubles", "[isDistFromLine]") {
 
     REQUIRE(isDistFromLine(params) == false);
 }
+
+TEST_CASE("points within circle", "[sepPointsCointainedInCircle]") {
+    Parameters_t params;
+    params.NUMPOINTS = 5;
+    params.A_PTS = 1;
+    params.B_PTS = 1;
+    params.RADIUS1 = 5.0;
+    params.X = new double[5]{0, 1, 2, 3, 4};
+    params.Y = new double[5]{0, 1, 2, 3, 4};  
+
+    REQUIRE(sepPointsContainedInCircle(params) == false);
+}
+
+TEST_CASE("points outside circle", "[sepPointsCointainedInCircle]") {
+    Parameters_t params;
+    params.NUMPOINTS = 6;
+    params.A_PTS = 2;
+    params.B_PTS = 1;
+    params.RADIUS1 = 2.0;
+    params.X = new double[6]{0, 1, 5, 6, 8, 10};
+    params.Y = new double[6]{0, 1, 5, 6, 8, 10}; 
+
+    REQUIRE(sepPointsContainedInCircle(params) == true);
+}
+
+TEST_CASE("triangle fits within circle", "[sepPointsCointainedInCircle]") {
+    Parameters_t params;
+    params.NUMPOINTS = 5;
+    params.A_PTS = 1;
+    params.B_PTS = 1;
+    params.RADIUS1 = 3.0;
+    params.X = new double[5]{0, 1, 2, 2, 3};
+    params.Y = new double[5]{0, 1, 1.5, 1, 0};
+
+    REQUIRE(sepPointsContainedInCircle(params) == false);
+}
+
+TEST_CASE("triangle exceeds circle", "[sepPointsCointainedInCircle]") {
+    Parameters_t params;
+    params.NUMPOINTS = 5;
+    params.A_PTS = 1;
+    params.B_PTS = 1;
+    params.RADIUS1 = 1.5;
+    params.X = new double[5]{0, 1, 2, 5, 6};
+    params.Y = new double[5]{0, 1, 4, 5, 6}; 
+
+    REQUIRE(sepPointsContainedInCircle(params) == true);
+}
+
+TEST_CASE("collinear points within circle", "[sepPointsCointainedInCircle]") {
+    Parameters_t params;
+    params.NUMPOINTS = 6;
+    params.A_PTS = 2;
+    params.B_PTS = 1;
+    params.RADIUS1 = 5.0;
+    params.X = new double[6]{0, 2, 4, 6, 8, 10};
+    params.Y = new double[6]{0, 0, 0, 0, 0, 0}; 
+
+    REQUIRE(sepPointsContainedInCircle(params) == false);
+}
+
+TEST_CASE("boundary condition - on the edge of the circle", "[sepPointsCointainedInCircle]") {
+    Parameters_t params;
+    params.NUMPOINTS = 5;
+    params.A_PTS = 1;
+    params.B_PTS = 1;
+    params.RADIUS1 = 2.0;
+    params.X = new double[5]{0, 2, 4, 1, 3};
+    params.Y = new double[5]{0, 2, 0, 1, 1}; 
+
+    REQUIRE(sepPointsContainedInCircle(params) == false);
+}
