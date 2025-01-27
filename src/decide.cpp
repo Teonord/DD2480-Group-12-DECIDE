@@ -181,5 +181,31 @@ bool sepPointsContainedInCircle(Parameters_t params) {
 // LIC 13
 
 // LIC 14
+/* This code solves LIC14
+ *
+ * It iterates throgh the datapoints and if the criteria for AREA1 is fulfilled the a1 boolean is set to true,
+ * and if the criteria for AREA2 is fulfilled the a2 boolean is set to true.
+ * After iterating through all points, if criteria for both AREA1 and AREA2 is fulfilled, the function returns true.
+ * Otherwise it returns false.
+ */
+bool lic14(Parameters_t params){
+     if(params.NUMPOINTS < 5 || params.AREA1 <= 0 || params.AREA2 <= 0) return false;
+
+     bool a1 = false;
+     bool a2 = false;
+     for(int i = 0; i < params.NUMPOINTS - params.E_PTS - params.F_PTS - 2; i++){
+          int second = i + params.E_PTS + 1;
+          int third = second + params.F_PTS + 1;
+          // determinant formula: https://www.cuemath.com/geometry/area-of-triangle-in-determinant-form/
+          double area = 0.5 * std::abs(
+            params.X[i]*(params.Y[second] - params.Y[third]) + 
+            params.X[second]*(params.Y[third]-params.Y[i]) + 
+            params.X[third]*(params.Y[i]) - params.Y[second]);
+          if(doubleCompare(area, params.AREA1) == GT) a1 = true;
+          if(doubleCompare(area, params.AREA2) == LT) a2 = true;
+     }
+     if(a1 && a2) return true;
+     return false;
+}
 
 // LIC 15

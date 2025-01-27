@@ -316,3 +316,121 @@ TEST_CASE("boundary condition - on the edge of the circle", "[sepPointsCointaine
 
     REQUIRE(sepPointsContainedInCircle(params) == false);
 }
+
+// Tests for LIC 14
+TEST_CASE("E_PTS and F_PTS too small", "[lic14]") {
+    Parameters_t params;
+    params.E_PTS = 0;
+    params.F_PTS = 0;
+    params.NUMPOINTS = 5; 
+    params.AREA1 = 12;
+    params.AREA2 = 12;
+    params.X = new double[5]{0, 2, 4, 1, 3};
+    params.Y = new double[5]{0, 2, 0, 1, 1};
+
+    REQUIRE(lic14(params) == false);
+}
+
+TEST_CASE("NUMPOINTS too small", "[lic14]") {
+    Parameters_t params;
+    params.E_PTS = 1;
+    params.F_PTS = 1;
+    params.NUMPOINTS = 4; 
+    params.AREA1 = 12;
+    params.AREA2 = 12;
+    params.X = new double[4]{100, 0, 2, 1};
+    params.Y = new double[4]{0, 2, 0, 1};
+
+    REQUIRE(lic14(params) == false);
+}
+
+TEST_CASE("AREA2 too small", "[lic14]") {
+    Parameters_t params;
+    params.E_PTS = 1;
+    params.F_PTS = 1;
+    params.NUMPOINTS = 5; 
+    params.AREA1 = 12;
+    params.AREA2 = 0;
+    params.X = new double[5]{100, 0, 2, 1, 1};
+    params.Y = new double[5]{0, 2, 0, 1, 2};
+
+    REQUIRE(lic14(params) == false);
+}
+
+TEST_CASE("A > AREA1 fulfilled; A < AREA2 not fulfilled", "[lic14]") {
+    Parameters_t params;
+    params.E_PTS = 1;
+    params.F_PTS = 1;
+    params.NUMPOINTS = 5; 
+    params.AREA1 = 12;
+    params.AREA2 = 12;
+    params.X = new double[5]{100, 0, 1, 1, 1};
+    params.Y = new double[5]{0, 2, 100, 1, 5};
+
+    REQUIRE(lic14(params) == false);
+}
+
+TEST_CASE("A > AREA1 not fulfilled; A < AREA2 fulfilled", "[lic14]") {
+    Parameters_t params;
+    params.E_PTS = 1;
+    params.F_PTS = 1;
+    params.NUMPOINTS = 5; 
+    params.AREA1 = 12;
+    params.AREA2 = 12;
+    params.X = new double[5]{0, 0, 1, 1, 2};
+    params.Y = new double[5]{0, 2, 0, 1, 0};
+
+    REQUIRE(lic14(params) == false);
+}
+
+TEST_CASE("edge case: A = AREA1", "[lic14]") {
+    Parameters_t params;
+    params.E_PTS = 1;
+    params.F_PTS = 2;
+    params.NUMPOINTS = 6; 
+    params.AREA1 = 12;
+    params.AREA2 = 12;
+    params.X = new double[6]{0, 100, 0, 12, 12, 12};
+    params.Y = new double[6]{0, 2, 2, 12, 13, 0};
+
+    REQUIRE(lic14(params) == false);
+}
+
+TEST_CASE("edge case: A = AREA2", "[lic14]") {
+    Parameters_t params;
+    params.E_PTS = 2;
+    params.F_PTS = 2;
+    params.NUMPOINTS = 7; 
+    params.AREA1 = 12;
+    params.AREA2 = 3;
+    params.X = new double[7]{0, 0, 100, 6, 2, 1, 0};
+    params.Y = new double[7]{0, 2, 0, 0, 1, 1, 1};
+
+    REQUIRE(lic14(params) == false);
+}
+
+TEST_CASE("negative values, ok scenario", "[lic14]") {
+    Parameters_t params;
+    params.E_PTS = 2;
+    params.F_PTS = 2;
+    params.NUMPOINTS = 8; 
+    params.AREA1 = 20;
+    params.AREA2 = 12;
+    params.X = new double[8]{-100, 0, 2, 0, 1, 12, -50, 2};
+    params.Y = new double[8]{0, -1, 3, 100, 0, 32, 50, -2};
+
+    REQUIRE(lic14(params) == true);
+}
+
+TEST_CASE("ok scenario", "[lic14]") {
+    Parameters_t params;
+    params.E_PTS = 2;
+    params.F_PTS = 2;
+    params.NUMPOINTS = 8; 
+    params.AREA1 = 20;
+    params.AREA2 = 12;
+    params.X = new double[8]{100, 0, 2, 0, 1, 12, 50, 2};
+    params.Y = new double[8]{0, 1, 3, 100, 0, 32, 50, 2};
+
+    REQUIRE(lic14(params) == true);
+}
