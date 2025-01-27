@@ -47,6 +47,25 @@ bool isConsecDistGTLen(Parameters_t params){
 // LIC 2
 
 // LIC 3
+/*
+ * Checks if there are three consecutive points that form a triangle with area > AREA1.
+ *
+ * The function iterates through the given points and uses the determinant formula to calculate area of triangle.
+ * It returns true if area is greater than AREA1.
+ */
+bool lic3(Parameters_t params) {
+    if(params.NUMPOINTS < 3 || params.AREA1 < 0) return false;
+
+    for(int i = 0; i < params.NUMPOINTS -2; i++){
+        // determinant formula: https://www.cuemath.com/geometry/area-of-triangle-in-determinant-form/
+        double area = 0.5 * std::abs(
+            params.X[i] * (params.Y[i+1] - params.Y[i+2]) + 
+            params.X[i+1] * (params.Y[i+2]-params.Y[i]) + 
+            params.X[i+2] * (params.Y[i] - params.Y[i+1]));
+        if(doubleCompare(area, params.AREA1) == GT) return true;
+    }
+    return false;
+}
 
 // LIC 4
 

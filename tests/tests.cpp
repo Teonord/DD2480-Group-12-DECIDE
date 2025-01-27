@@ -94,7 +94,66 @@ TEST_CASE("point 4-5 outside of length", "[isConsecDistGTLen]") {
     REQUIRE(isConsecDistGTLen(params) == true);
 }
 
+// Tests for LIC 3
+TEST_CASE("less points than required", "[lic3]") {
+    Parameters_t params;
+    params.NUMPOINTS = 2;
+    params.AREA1 = 8;
+    params.X = new double[2]{10,10};
+    params.Y = new double[2]{10,10};
 
+    REQUIRE(lic3(params) == false);
+}
+
+TEST_CASE("AREA1 too small", "[lic3]") {
+    Parameters_t params;
+    params.NUMPOINTS = 3;
+    params.AREA1 = -1;
+    params.X = new double[3]{0, 0, 1};
+    params.Y = new double[3]{0, 2, 0};
+
+    REQUIRE(lic3(params) == false);
+}
+
+TEST_CASE("negative values in points", "[lic3]") {
+    Parameters_t params; 
+    params.NUMPOINTS = 3;
+    params.AREA1 = 2;
+    params.X = new double[3]{0, 0, -2};
+    params.Y = new double[3]{0, -3, 0};
+
+    REQUIRE(lic3(params) == true);
+}
+
+TEST_CASE("precisely equal area", "[lic3]") {
+    Parameters_t params;
+    params.NUMPOINTS = 5;
+    params.AREA1 = 5;
+    params.X = new double[5]{0, 1, 2, 2, 7};
+    params.Y = new double[5]{0, 1, 0, 2, 2};
+
+    REQUIRE(lic3(params) == false);
+}
+
+TEST_CASE("too small area of triangle", "[lic3]") {
+    Parameters_t params;
+    params.NUMPOINTS = 5;
+    params.AREA1 = 5;
+    params.X = new double[5]{0, 1, 2, 3, 4};
+    params.Y = new double[5]{0, 0.5, 0, 0.5, 0};
+
+    REQUIRE(lic3(params) == false);
+}
+
+TEST_CASE("area big enough", "[lic3]") {
+    Parameters_t params;
+    params.NUMPOINTS = 5;
+    params.AREA1 = 2;
+    params.X = new double[5]{0, 10, 15, 20, 43};
+    params.Y = new double[5]{5, 0, 10, 13, 2};
+
+    REQUIRE(lic3(params) == true);
+}
 
 // Tests for LIC 6
 
