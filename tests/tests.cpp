@@ -853,3 +853,21 @@ TEST_CASE("ok scenario", "[lic14]") {
 
     REQUIRE(lic14(params) == true);
 }
+
+TEST_CASE("FUV is all false", "[launchDecision]") {
+    bool testFUV[15] = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
+
+    REQUIRE(launchDecision(testFUV) == false);
+}
+
+TEST_CASE("FUV is all true", "[launchDecision]") {
+    bool testFUV[15] = {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
+
+    REQUIRE(launchDecision(testFUV) == true);
+}
+
+TEST_CASE("FUV is mixed", "[launchDecision]") {
+    bool testFUV[15] = {true, true, true, true, true, true, true, true, false, true, true, true, true, false, true};
+
+    REQUIRE(launchDecision(testFUV) == false);
+}
