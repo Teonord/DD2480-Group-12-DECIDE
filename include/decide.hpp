@@ -46,6 +46,9 @@ void decide();
 // LIC 0
 bool isConsecDistGTLen(Parameters_t params);
 
+// LIC 1
+bool lic1(Parameters_t params);
+
 // LIC 2
 bool lic2(Parameters_t params);
 

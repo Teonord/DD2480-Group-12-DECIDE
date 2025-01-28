@@ -94,6 +94,48 @@ TEST_CASE("point 4-5 outside of length", "[isConsecDistGTLen]") {
     REQUIRE(isConsecDistGTLen(params) == true);
 }
 
+//Tests for LIC 1
+TEST_CASE("LIC 1: Not enough points", "[lic1]") {
+    Parameters_t params;
+    params.NUMPOINTS = 1; // Only 1 point
+    params.RADIUS1 = 1.0;
+    params.X = new double[1]{0};
+    params.Y = new double[1]{0};
+
+    REQUIRE(lic1(params) == false); // Not enough points to evaluate
+}
+
+TEST_CASE("LIC 1: All points within circle", "[lic1]") {
+    Parameters_t params;
+    params.NUMPOINTS = 3;
+    params.RADIUS1 = 1.0;
+    params.X = new double[3]{0, 1, 2};
+    params.Y = new double[3]{0, 0.5, 0};
+
+    REQUIRE(lic1(params) == false); // All distances <= 2 * RADIUS1
+}
+
+TEST_CASE("LIC 1: One pair outside circle", "[lic1]") {
+    Parameters_t params;
+    params.NUMPOINTS = 3;
+    params.RADIUS1 = 1.0;
+    params.X = new double[3]{0, 3, 4};
+    params.Y = new double[3]{0, 0, 0};
+
+    REQUIRE(lic1(params) == true); // Distance between (0,0) and (3,0) > 2 * RADIUS1
+}
+
+TEST_CASE("LIC 1: Multiple pairs outside circle", "[lic1]") {
+    Parameters_t params;
+    params.NUMPOINTS = 4;
+    params.RADIUS1 = 1.5;
+    params.X = new double[4]{0, 4, 8, 2};
+    params.Y = new double[4]{0, 0, 0, 0};
+
+    REQUIRE(lic1(params) == true); // Multiple distances > 2 * RADIUS1
+}
+
+
 // Tests for LIC 2
 TEST_CASE("LIC 2: Not enough points", "[lic2]") {
     Parameters_t params;
