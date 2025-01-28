@@ -23,7 +23,7 @@ Comptype doubleCompare (double a, double b) {
     return GT;
 }
 
-/* LIC 0
+/** LIC 0
 /*
  * Checks if there are two consecutive points with a distance greater than LENGTH1.
  *
@@ -243,7 +243,59 @@ bool sepPointsContainedInCircle(Parameters_t params) {
     return false;
 }
 
-// LIC 9
+/**  LIC 9
+ * Determines if the angle between two vectors exceeds a specified threshold.
+ *
+ * This function checks if the angle formed by three points (A, B, and C) exceeds the threshold
+ * defined by PI - EPSILON. It iterates through the list of points and calculates
+ * the angle using the dot product formula. The function returns true if the angle is less
+ * than (PI - EPSILON)
+ *
+ * @param params A Parameters_t object containing the following fields:
+ *               - C_PTS: The number of consecutive intervening points between the first point (A) and the second point (B).
+ *               - D_PTS: The number of consecutive intervening points between the second point (B) and the third point (C).
+ *               - NUMPOINTS: The total number of points.
+ *               - EPSILON: The angle threshold in radians.
+ *               - X: An array of X-coordinates of the points.
+ *               - Y: An array of Y-coordinates of the points.
+ * 
+ * @return boolean: Returns true if any angle is within the threshold, otherwise returns false.
+ */
+bool isAngleWithinThreshold(Parameters_t params) {
+    // Base Cases (implicitly returns false if NUMPOINTS < 5)
+    if (params.C_PTS < 1 || params.D_PTS < 1 || params.C_PTS + params.D_PTS > params.NUMPOINTS - 3) return false;
+    if (params.EPSILON > PI || params.EPSILON < 0) return false;
+
+    for(int i = 0; i < params.NUMPOINTS - params.C_PTS - params.D_PTS - 2; i++){
+        int A = i;
+        int B = i + params.C_PTS + 1;
+        int C = i + params.C_PTS + params.D_PTS + 2;
+
+        //continue if point A or C are EQ to point B (vertex)
+        if(doubleCompare(params.X[A], params.X[B]) == EQ && doubleCompare(params.Y[A], params.Y[B]) == EQ) continue;
+        if(doubleCompare(params.X[B], params.X[C]) == EQ && doubleCompare(params.Y[B], params.Y[C]) == EQ) continue;
+
+        //calculate vector 2(B)->1(A) and 2(B)->3(C), vector B->A => A_i-B_i
+        double vectBAx = params.X[A] - params.X[B];
+        double vectBAy = params.Y[A] - params.Y[B];
+        double vectBCx = params.X[C] - params.X[B];
+        double vectBCy = params.Y[C] - params.Y[B];
+
+        //https://en.wikipedia.org/wiki/Dot_product
+        //angle = arctan (dot product / ||v1|| * ||v2||)
+        double dotproduct = vectBAx * vectBCx + vectBAy * vectBCy;
+        double vectBAmagnitude = sqrt(pow(vectBAx, 2) + pow(vectBAy, 2));
+        double vectBCmagnitude = sqrt(pow(vectBCx, 2) + pow(vectBCy, 2));
+        double angle = acos(dotproduct/vectBAmagnitude * vectBCmagnitude); //angle in rads
+
+        if(doubleCompare(angle, PI - params.EPSILON) == LT) return true;
+        if(doubleCompare(angle, PI + params.EPSILON) == GT) return true; // not really necessary as the angle calculated will be shortest distance between the vectors.
+    }
+
+    // If nothing was found
+    return false;
+
+}
 
 // LIC 10
 /* This code solves LIC10

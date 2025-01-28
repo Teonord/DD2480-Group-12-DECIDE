@@ -61,6 +61,9 @@ bool isDistFromLine(Parameters_t params);
 // LIC 8
 bool sepPointsContainedInCircle(Parameters_t params);
 
+// LIC 9
+bool isAngleWithinThreshold(Parameters_t params);
+
 // LIC 10
 bool lic10(Parameters_t params);
 

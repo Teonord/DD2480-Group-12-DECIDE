@@ -223,7 +223,7 @@ TEST_CASE("LIC 5: No consecutive decreasing x-coordinates", "[lic5]") {
     params.X = new double[4]{1.0, 2.0, 3.0, 4.0};
     params.Y = new double[4]{1.0, 1.0, 1.0, 1.0};
 
-    REQUIRE(lic5(params) == false); // No consecutive decreasing x
+    REQUIRE(lic5(params) == false); // No consecutive decreasing xgit 
 }
 
 TEST_CASE("LIC 5: One pair of consecutive decreasing x-coordinates", "[lic5]") {
@@ -408,6 +408,68 @@ TEST_CASE("boundary condition - on the edge of the circle", "[sepPointsCointaine
 
     REQUIRE(sepPointsContainedInCircle(params) == false);
 }
+
+// Tests for LIC 9
+TEST_CASE("C_PTS under threshold", "[isAngleWithinThreshold]") {
+    Parameters_t params;
+    params.C_PTS = 0;
+    params.D_PTS = 1;
+    params.NUMPOINTS = 5; 
+    params.EPSILON = -PI;
+    params.X = new double[5]{1, 1, 0, 1, 0};
+    params.Y = new double[5]{0, 2, 0, 1, 1};
+
+    REQUIRE(isAngleWithinThreshold(params) == false);
+}
+
+TEST_CASE("D_PTS under threshold", "[isAngleWithinThreshold]") {
+    Parameters_t params;
+    params.C_PTS = 1;
+    params.D_PTS = 0;
+    params.NUMPOINTS = 5; 
+    params.EPSILON = -PI;
+    params.X = new double[5]{1, 2, 0, 1, 0};
+    params.Y = new double[5]{0, 2, 0, 1, 1};
+
+    REQUIRE(isAngleWithinThreshold(params) == false);
+}
+
+TEST_CASE("Numpoints under threshold", "[isAngleWithinThreshold]") {
+    Parameters_t params;
+    params.C_PTS = 1;
+    params.D_PTS = 0;
+    params.NUMPOINTS = 3; 
+    params.EPSILON = -PI;
+    params.X = new double[5]{1, 2, 0, 1, 0};
+    params.Y = new double[5]{0, 2, 0, 1, 1};
+
+    REQUIRE(isAngleWithinThreshold(params) == false);
+}
+
+TEST_CASE("90 degree angle, LT 180 allowed", "[isAngleWithinThreshold]") {
+    Parameters_t params;
+    params.C_PTS = 1;
+    params.D_PTS = 1;
+    params.NUMPOINTS = 5; 
+    params.EPSILON = 0;
+    params.X = new double[5]{1, 2, 0, 1, 0};
+    params.Y = new double[5]{0, 2, 0, 1, 1};
+
+    REQUIRE(isAngleWithinThreshold(params) == true);
+}
+
+TEST_CASE("90 degree angle, LT 90 allowed", "[isAngleWithinThreshold]") {
+    Parameters_t params;
+    params.C_PTS = 1;
+    params.D_PTS = 1;
+    params.NUMPOINTS = 5; 
+    params.EPSILON = PI / 2;
+    params.X = new double[5]{1, 2, 0, 1, 0};
+    params.Y = new double[5]{0, 2, 0, 1, 1};
+
+    REQUIRE(isAngleWithinThreshold(params) == false);
+}
+
 
 // Tests for LIC 10
 TEST_CASE("E_PTS and F_PTS below allowed threshold", "[lic10]") {
