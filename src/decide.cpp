@@ -69,7 +69,26 @@ bool lic3(Parameters_t params) {
 
 // LIC 4
 
-// LIC 5
+/* LIC 5
+ *
+ * This code solves LIC 5, which is true if there exists at least one pair of consecutive data points
+ * where the x-coordinate of the first point is greater than the x-coordinate of the second point. 
+ * If there are fewer than 2 points, the condition cannot be satisfied, and the function returns false. 
+ */
+bool lic5(Parameters_t params) {
+    if (params.NUMPOINTS < 2) {
+        return false; // Not enough points to compare
+    }
+
+    for (int i = 0; i < params.NUMPOINTS - 1; ++i) {
+        if (params.X[i] > params.X[i + 1]) {
+            return true; // Condition satisfied
+        }
+    }
+
+    return false; // No such pair found
+}
+
 
 /* LIC 6
  *
