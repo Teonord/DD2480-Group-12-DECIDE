@@ -1,5 +1,9 @@
 #include "../include/decide.hpp"
 #include <iostream>
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 
  /**
  * Compares two double values with a precision tolerance.
@@ -44,7 +48,57 @@ bool isConsecDistGTLen(Parameters_t params){
 
 // LIC 1
 
-// LIC 2
+/* LIC 2
+ *
+ * Checks if there are three consecutive points that form an angle outside the range [PI - EPSILON, PI + EPSILON].
+ * The function iterates through the points and calculates the angle between two vectors formed by three consecutive points.
+ * It uses the dot product formula and magnitudes of the vectors to compute the angle.
+ * The function returns true if at least one angle is less than (PI - EPSILON) or greater than (PI + EPSILON).
+ * Collinear points with an angle exactly equal to PI are ignored.
+ */
+bool lic2(Parameters_t params) {
+    if (params.NUMPOINTS < 3) {
+        return false; // Not enough points to form an angle
+    }
+
+    for (int i = 0; i <= params.NUMPOINTS - 3; ++i) {
+        double x1 = params.X[i], y1 = params.Y[i];
+        double x2 = params.X[i + 1], y2 = params.Y[i + 1];
+        double x3 = params.X[i + 2], y3 = params.Y[i + 2];
+
+        // Vectors from the middle point to the other two points
+        double vector1_x = x1 - x2;
+        double vector1_y = y1 - y2;
+        double vector2_x = x3 - x2;
+        double vector2_y = y3 - y2;
+
+        // Magnitudes of the vectors
+        double magnitude1 = std::sqrt(vector1_x * vector1_x + vector1_y * vector1_y);
+        double magnitude2 = std::sqrt(vector2_x * vector2_x + vector2_y * vector2_y);
+
+        // Skip collinear points (magnitude == 0)
+        if (magnitude1 == 0 || magnitude2 == 0) {
+            continue;
+        }
+
+        // Compute the dot product and the angle
+        double dot_product = (vector1_x * vector2_x + vector1_y * vector2_y);
+        double cos_theta = dot_product / (magnitude1 * magnitude2);
+
+        // Clamp cos_theta to [-1, 1] to account for floating-point precision errors
+        cos_theta = std::max(-1.0, std::min(1.0, cos_theta));
+
+        double angle = std::acos(cos_theta); // Angle in radians
+
+        // Check if the angle is outside the range [PI - EPSILON, PI + EPSILON]
+        if (angle < (M_PI - params.EPSILON) || angle > (M_PI + params.EPSILON)) {
+            return true; // Found an angle outside the range
+        }
+    }
+
+    return false; // No such angle found
+}
+
 
 // LIC 3
 /*

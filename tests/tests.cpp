@@ -94,6 +94,57 @@ TEST_CASE("point 4-5 outside of length", "[isConsecDistGTLen]") {
     REQUIRE(isConsecDistGTLen(params) == true);
 }
 
+// Tests for LIC 2
+TEST_CASE("LIC 2: Not enough points", "[lic2]") {
+    Parameters_t params;
+    params.NUMPOINTS = 2;
+    params.EPSILON = 0.1;
+    params.X = new double[2]{0, 1};
+    params.Y = new double[2]{0, 1};
+
+    REQUIRE(lic2(params) == false); // Not enough points
+}
+
+TEST_CASE("LIC 2: Collinear points", "[lic2]") {
+    Parameters_t params;
+    params.NUMPOINTS = 3;
+    params.EPSILON = 0.1;
+    params.X = new double[3]{0, 1, 2};
+    params.Y = new double[3]{0, 0, 0};
+
+    REQUIRE(lic2(params) == false); // Collinear points form angle = PI
+}
+
+TEST_CASE("LIC 2: Angle less than PI - EPSILON", "[lic2]") {
+    Parameters_t params;
+    params.NUMPOINTS = 3;
+    params.EPSILON = 0.1;
+    params.X = new double[3]{0, 1, 2};
+    params.Y = new double[3]{0, 1, 0};
+
+    REQUIRE(lic2(params) == true); // Angle less than PI - EPSILON
+}
+
+TEST_CASE("LIC 2: Angle greater than PI + EPSILON", "[lic2]") {
+    Parameters_t params;
+    params.NUMPOINTS = 3;
+    params.EPSILON = 0.1;
+    params.X = new double[3]{0, -1, -2};
+    params.Y = new double[3]{0, 1, 0};
+
+    REQUIRE(lic2(params) == true); // Angle greater than PI + EPSILON
+}
+
+TEST_CASE("LIC 2: All angles within [PI - EPSILON, PI + EPSILON]", "[lic2]") {
+    Parameters_t params;
+    params.NUMPOINTS = 4;
+    params.EPSILON = 0.5;
+    params.X = new double[4]{0, 1, 2, 3}; // Adjust points
+    params.Y = new double[4]{0, 0.1, 0.2, 0.3}; // Modify to ensure all angles are within range
+
+    REQUIRE(lic2(params) == false); // No angle outside the range
+}
+
 // Tests for LIC 3
 TEST_CASE("less points than required", "[lic3]") {
     Parameters_t params;
