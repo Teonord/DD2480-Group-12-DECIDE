@@ -155,6 +155,45 @@ TEST_CASE("area big enough", "[lic3]") {
     REQUIRE(lic3(params) == true);
 }
 
+// Tests for LIC 5
+
+TEST_CASE("LIC 5: Not enough points", "[lic5]") {
+    Parameters_t params;
+    params.NUMPOINTS = 1;
+    params.X = new double[1]{1.0};
+    params.Y = new double[1]{1.0};
+
+    REQUIRE(lic5(params) == false); // Not enough points
+}
+
+TEST_CASE("LIC 5: No consecutive decreasing x-coordinates", "[lic5]") {
+    Parameters_t params;
+    params.NUMPOINTS = 4;
+    params.X = new double[4]{1.0, 2.0, 3.0, 4.0};
+    params.Y = new double[4]{1.0, 1.0, 1.0, 1.0};
+
+    REQUIRE(lic5(params) == false); // No consecutive decreasing x
+}
+
+TEST_CASE("LIC 5: One pair of consecutive decreasing x-coordinates", "[lic5]") {
+    Parameters_t params;
+    params.NUMPOINTS = 4;
+    params.X = new double[4]{4.0, 3.0, 5.0, 6.0};
+    params.Y = new double[4]{1.0, 1.0, 1.0, 1.0};
+
+    REQUIRE(lic5(params) == true); // One pair satisfies condition
+}
+
+TEST_CASE("LIC 5: Multiple pairs of consecutive decreasing x-coordinates", "[lic5]") {
+    Parameters_t params;
+    params.NUMPOINTS = 5;
+    params.X = new double[5]{5.0, 3.0, 4.0, 2.0, 1.0};
+    params.Y = new double[5]{1.0, 1.0, 1.0, 1.0, 1.0};
+
+    REQUIRE(lic5(params) == true); // Multiple pairs satisfy condition
+}
+
+
 // Tests for LIC 6
 
 TEST_CASE("too few points", "[isDistFromLine]") {
