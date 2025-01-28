@@ -173,6 +173,27 @@ bool sepPointsContainedInCircle(Parameters_t params) {
 // LIC 9
 
 // LIC 10
+/* This code solves LIC10
+ *
+ * It iterates throgh the datapoints and if the area with the three specified points are larger then AREA1, the function returns true.
+ * Otherwise it returns false.
+ */
+bool lic10(Parameters_t params){
+     if(params.NUMPOINTS < 5 || params.E_PTS < 1 || params.F_PTS < 1 || params.AREA1 <= 0
+        || params.E_PTS + params.F_PTS > params.NUMPOINTS - 3) return false;
+
+     for(int i = 0; i < params.NUMPOINTS - params.E_PTS - params.F_PTS - 2; i++){
+          int second = i + params.E_PTS + 1;
+          int third = second + params.F_PTS + 1;
+          // determinant formula: https://www.cuemath.com/geometry/area-of-triangle-in-determinant-form/
+          double area = 0.5 * std::abs(
+            params.X[i]*(params.Y[second] - params.Y[third]) + 
+            params.X[second]*(params.Y[third]-params.Y[i]) + 
+            params.X[third]*(params.Y[i]) - params.Y[second]);
+          if(doubleCompare(area, params.AREA1) == GT) return true;
+     }
+     return false;
+}
 
 // LIC 11
 
