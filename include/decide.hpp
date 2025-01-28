@@ -79,4 +79,7 @@ bool lic13(Parameters_t params);
 // LIC 14
 bool lic14(Parameters_t params);
 
+// Launch Decision
+bool launchDecision(bool FUV[15]);
+
 #endif
