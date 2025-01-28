@@ -46,7 +46,36 @@ bool isConsecDistGTLen(Parameters_t params){
     return false;
 }
 
-// LIC 1
+/* LIC 1
+ * Checks if there exists at least one pair of consecutive points where the distance between them
+ * is greater than the diameter (2 * RADIUS1) of a circle.
+ * The function iterates through consecutive points, calculates the distance between each pair,
+ * and compares it to 2 * RADIUS1.
+ * It returns true if at least one pair satisfies the condition, otherwise false.
+ */
+
+bool lic1(Parameters_t params) {
+    if (params.NUMPOINTS < 2) {
+        return false; // Not enough points to evaluate
+    }
+
+    for (int i = 0; i < params.NUMPOINTS - 1; ++i) {
+        double x1 = params.X[i], y1 = params.Y[i];
+        double x2 = params.X[i + 1], y2 = params.Y[i + 1];
+
+        // Calculate the distance between the two points
+        double distance = std::sqrt(std::pow(x2 - x1, 2) + std::pow(y2 - y1, 2));
+
+        // Check if the distance is greater than 2 * RADIUS1 (diameter of the circle)
+        if (distance > 2 * params.RADIUS1) {
+            return true; // Found a pair of points that cannot fit within the circle
+        }
+    }
+
+    return false; // No such pair of points found
+}
+
+
 
 /* LIC 2
  *
