@@ -61,6 +61,9 @@ bool sepPointsContainedInCircle(Parameters_t params);
 // LIC 10
 bool lic10(Parameters_t params);
 
+// LIC 11
+bool lic11(Parameters_t params);
+
 // LIC 14
 bool lic14(Parameters_t params);
 
