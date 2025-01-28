@@ -3,7 +3,7 @@
 
 #include <cmath>
 
-static const double PI = 3.415926535;
+static const double PI = 3.1415926535;
 
 // Enum to know operator in LCM
 typedef enum { NOTUSED=777, ORR, ANDD } Connectors;
