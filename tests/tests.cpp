@@ -284,6 +284,8 @@ TEST_CASE("line w/ negative doubles", "[isDistFromLine]") {
     REQUIRE(isDistFromLine(params) == false);
 }
 
+// LIC 8
+
 TEST_CASE("points within circle", "[sepPointsCointainedInCircle]") {
     Parameters_t params;
     params.NUMPOINTS = 5;
@@ -500,6 +502,83 @@ TEST_CASE("appropriate scenario, should be allowed", "[lic11]") {
     params.X = new double[5]{1, 5, 2, 4, 3};
 
     REQUIRE(lic11(params) == true);
+}
+
+// Tests for LIC 13
+
+TEST_CASE("A_PTS less than 1", "[lic13]") {
+    Parameters_t params;
+    params.NUMPOINTS = 5;
+    params.A_PTS = 0;
+    params.B_PTS = 1;
+    params.RADIUS1 = 5.0;
+    params.X = new double[5]{-2, 1, 2, 3, 0};
+    params.Y = new double[5]{0, 1, 0, 3, 2};  
+
+    REQUIRE(lic13(params) == false);
+}
+
+TEST_CASE("B_PTS less than 1", "[lic13]") {
+    Parameters_t params;
+    params.NUMPOINTS = 5;
+    params.A_PTS = 1;
+    params.B_PTS = 0;
+    params.RADIUS1 = 5.0;
+    params.X = new double[5]{-2, 1, 2, 3, 0};
+    params.Y = new double[5]{0, 1, 0, 3, 2};   
+
+    REQUIRE(lic13(params) == false);
+}
+
+TEST_CASE("NUMPOINTS less than 5", "[lic13]") {
+    Parameters_t params;
+    params.NUMPOINTS = 4;
+    params.A_PTS = 1;
+    params.B_PTS = 1;
+    params.RADIUS1 = 5.0;
+    params.X = new double[4]{-2, 1, 2, 3};
+    params.Y = new double[4]{0, 1, 0, 3};  
+
+    REQUIRE(lic13(params) == false);
+}
+
+TEST_CASE("All fit in radius1", "[lic13]") {
+    Parameters_t params;
+    params.NUMPOINTS = 5;
+    params.A_PTS = 1;
+    params.B_PTS = 1;
+    params.RADIUS1 = 10;
+    params.RADIUS2 = 10;
+    params.X = new double[5]{-2, 1, 2, 3, 0};
+    params.Y = new double[5]{0, 1, 0, 3, 2};  
+
+    REQUIRE(lic13(params) == false);
+}
+
+TEST_CASE("One fit in radius2, one does not in radius1", "[lic13]") {
+    Parameters_t params;
+    params.NUMPOINTS = 5;
+    params.A_PTS = 1;
+    params.B_PTS = 1;
+    params.RADIUS1 = 1.99;
+    params.RADIUS2 = 10.0;
+    params.X = new double[5]{-2, 1, 2, 3, 0};
+    params.Y = new double[5]{0, 1, 0, 3, 2};  
+
+    REQUIRE(lic13(params) == true);
+}
+
+TEST_CASE("Multiple fit in radius2, multiple do not in radius1", "[lic13]") {
+    Parameters_t params;
+    params.NUMPOINTS = 5;
+    params.A_PTS = 1;
+    params.B_PTS = 1;
+    params.RADIUS1 = 1.99;
+    params.RADIUS2 = 10.0;
+    params.X = new double[7]{-2, 1, 2, 3, 0, 0, 25};
+    params.Y = new double[7]{0, 1, 0, 3, 2, 0, -100};  
+
+    REQUIRE(lic13(params) == true);
 }
 
 // Tests for LIC 14

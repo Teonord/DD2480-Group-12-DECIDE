@@ -233,7 +233,62 @@ bool lic11(Parameters_t params) {
 
 // LIC 12
 
-// LIC 13
+/**  LIC 13
+ * 
+ * This function checks if there are three points seperated by exactly A_PTS and B_PTS 
+ * consecutive intervening. For any three points separeted by the intervening point.
+ * It checks if there are any three points that do not fit into a circle of radius = RADIUS1
+ * It also checks if there are any three points that do fit into a circle of radius = RADIUS2
+ * If both conditions are met it returns true.
+ * If only one or none are met it returns false
+ *
+ * @param params A Parameters_t object containing the following fields:
+ *              - A_PTS: The number of consecutive intervening points between the first point and the second point.
+ *              - B_PTS: The number of consecutive intervening points between the second point and the third point.
+ *              - NUMPOINTS: The total number of points.
+ *              - RADIUS1: double radius of a circle.
+ *              - RADIUS2: double radius of a circle.
+ *              - X: An array of X-coordinates of the points.
+ *              - Y: An array of Y-coordinates of the points.
+ * 
+ * @return boolean: Returns true if any three separate points fit in radius2 AND if any three
+ * separe points CANNOT fit in radius1 else return false
+ */
+
+bool lic13(Parameters_t params) {
+    // Base Cases (implicitly returns false if NUMPOINTS < 5)
+    if (params.A_PTS < 1 || params.B_PTS < 1 || params.A_PTS + params.B_PTS > params.NUMPOINTS - 3) return false;
+
+    bool radius1Condition = false;
+    bool radius2Condition = false;
+    
+    for (int i = 0; i < params.NUMPOINTS - params.A_PTS - params.B_PTS - 2; i++) {
+        double ax = params.X[i];
+        double bx = params.X[i+params.A_PTS+1];
+        double cx = params.X[i+params.A_PTS+params.B_PTS+2];
+        double ay = params.Y[i];
+        double by = params.Y[i+params.A_PTS+1];
+        double cy = params.Y[i+params.A_PTS+params.B_PTS+2];
+
+        // Make a triangle
+        double ab = hypot(bx - ax, by - ay);
+        double ac = hypot(cx - ax, cy - ay);
+        double bc = hypot(cx - bx, cy - by);
+        
+        // Calculate Circumradius 
+        // https://artofproblemsolving.com/wiki/index.php/Circumradius
+        // https://www.cuemath.com/geometry/area-of-triangle-in-coordinate-geometry/
+        double area = fabs(ax * (by-cy) + bx * (cy-ay) + cx * (ay-by)) / 2;
+        if (doubleCompare(area, 0) == EQ) continue;
+        double circumradius = (ab * bc * ac) / (4 * area);
+
+        if (doubleCompare(circumradius, params.RADIUS1) == GT) radius1Condition = true; //Assuming they fit if EQ to radius
+        if (doubleCompare(circumradius, params.RADIUS2) != GT) radius2Condition = true; //Assuming they fit if EQ to radius
+    }
+
+    if (radius1Condition && radius2Condition) return true;
+    return false;
+}
 
 // LIC 14
 /* This code solves LIC14
@@ -262,5 +317,3 @@ bool lic14(Parameters_t params){
      if(a1 && a2) return true;
      return false;
 }
-
-// LIC 15
