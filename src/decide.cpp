@@ -196,6 +196,21 @@ bool lic10(Parameters_t params){
 }
 
 // LIC 11
+/* This code solces LIC11
+ *
+ * It iterates through the give datapoints and compares if x value of the datapoint at i + G_PTS is less than -
+ * (LT) the x value of the datpoint at i.
+ * If this comparison is true, at any point, we know that the conditions of X[j]-X[i]<0 and i<j will be satisfied.
+ * It returns false if no such comparison is found.
+ */
+bool lic11(Parameters_t params) {
+    if(params.NUMPOINTS < 3 || params.G_PTS < 1 || params.G_PTS > params.NUMPOINTS - 2) return false;
+
+    for(int i = 0; i < params.NUMPOINTS - params.G_PTS - 1; i++){  
+        if(params.X[i + params.G_PTS + 1] - params.X[i] < 0) return true;
+    }
+    return false;
+}
 
 // LIC 12
 

@@ -390,6 +390,79 @@ TEST_CASE("allowed scenario", "[lic10]") {
     REQUIRE(lic10(params) == true);
 }
 
+// Tests for LIC 11
+TEST_CASE("G_PTS too small", "[lic11]") {
+    Parameters_t params;
+    params.G_PTS = 0;
+    params.NUMPOINTS = 3;
+    params.X = new double[3]{3, 2, 1};
+
+    REQUIRE(lic11(params) == false);
+}
+
+TEST_CASE("G_PTS too large", "[lic11]") {
+    Parameters_t params;
+    params.G_PTS = 2;
+    params.NUMPOINTS = 3;
+    params.X = new double[3]{3, 2, 1};
+
+    REQUIRE(lic11(params) == false);
+}
+
+TEST_CASE("X[i] = X[j], not allowed", "[lic11]") {
+    Parameters_t params;
+    params.G_PTS = 1;
+    params.NUMPOINTS = 3;
+    params.X = new double[3]{1, 1, 1};
+
+    REQUIRE(lic11(params) == false);
+}
+
+TEST_CASE("NUMPOINTS < 3, not allowed", "[lic11]") {
+    Parameters_t params;
+    params.G_PTS = 1;
+    params.NUMPOINTS = 2;
+    params.X = new double[2]{1, 1};
+
+    REQUIRE(lic11(params) == false);
+}
+
+TEST_CASE("negative values, should not be allowed", "[lic11]") {
+    Parameters_t params;
+    params.G_PTS = 1;
+    params.NUMPOINTS = 5;
+    params.X = new double[5]{1, -3, 2, 2, 3};
+
+    REQUIRE(lic11(params) == false);
+}
+
+TEST_CASE("both negative values, should not be allowed", "[lic11]") {
+    Parameters_t params;
+    params.G_PTS = 1;
+    params.NUMPOINTS = 5;
+    params.X = new double[5]{1, -3, 2, -2, 3};
+
+    REQUIRE(lic11(params) == false);
+}
+
+TEST_CASE("negative values, should be allowed", "[lic11]") {
+    Parameters_t params;
+    params.G_PTS = 1;
+    params.NUMPOINTS = 5;
+    params.X = new double[5]{1, 3, 2, -4, 3};
+
+    REQUIRE(lic11(params) == true);
+}
+
+TEST_CASE("appropriate scenario, should be allowed", "[lic11]") {
+    Parameters_t params;
+    params.G_PTS = 1;
+    params.NUMPOINTS = 5;
+    params.X = new double[5]{1, 5, 2, 4, 3};
+
+    REQUIRE(lic11(params) == true);
+}
+
 // Tests for LIC 14
 TEST_CASE("E_PTS and F_PTS too small", "[lic14]") {
     Parameters_t params;
