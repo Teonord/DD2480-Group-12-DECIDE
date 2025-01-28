@@ -356,6 +356,79 @@ TEST_CASE("boundary condition - on the edge of the circle", "[sepPointsCointaine
     REQUIRE(sepPointsContainedInCircle(params) == false);
 }
 
+// Tests for LIC 10
+TEST_CASE("E_PTS and F_PTS below allowed threshold", "[lic10]") {
+    Parameters_t params;
+    params.E_PTS = 0;
+    params.F_PTS = 0;
+    params.NUMPOINTS = 5; 
+    params.AREA1 = 1;
+    params.X = new double[5]{0, 2, 4, 1, 3};
+    params.Y = new double[5]{0, 2, 0, 1, 1};
+
+    REQUIRE(lic10(params) == false);
+}
+
+TEST_CASE("E PTS + F PTS > NUMPOINTS - 3, this is not allowed", "[lic10]") {
+    Parameters_t params;
+    params.E_PTS = 2;
+    params.F_PTS = 3;
+    params.NUMPOINTS = 7; 
+    params.AREA1 = 1;
+    params.X = new double[7]{0, 2, 4, 1, 3, 4, 5};
+    params.Y = new double[7]{0, 2, 0, 1, 1, 4, 5};
+
+    REQUIRE(lic10(params) == false);
+}
+
+TEST_CASE("NUMPOINTS < 5, not allowed", "[lic10]") {
+    Parameters_t params;
+    params.E_PTS = 2;
+    params.F_PTS = 2;
+    params.NUMPOINTS = 4; 
+    params.AREA1 = 1;
+    params.X = new double[4]{100, 0, 2, 1};
+    params.Y = new double[4]{0, 2, 0, 1};
+
+    REQUIRE(lic10(params) == false);
+}
+
+TEST_CASE("edge case: the area of the triangle is equal to AREA1", "[lic10]") {
+    Parameters_t params;
+    params.E_PTS = 2;
+    params.F_PTS = 2;
+    params.NUMPOINTS = 8; 
+    params.AREA1 = 12;
+    params.X = new double[8]{0, 1, 2, 12, 3, 12, 0, 4};
+    params.Y = new double[8]{0, 2, 2, 0, 2, 0, 2, 2};
+
+    REQUIRE(lic10(params) == false);
+}
+
+TEST_CASE("negative values, scenario should be ok", "[lic10]") {
+    Parameters_t params;
+    params.E_PTS = 2;
+    params.F_PTS = 2;
+    params.NUMPOINTS = 8; 
+    params.AREA1 = 20;
+    params.X = new double[8]{-100, 0, 2, 0, 1, 12, -50, 2};
+    params.Y = new double[8]{0, -1, 3, 100, 0, 32, 50, -2};
+
+    REQUIRE(lic10(params) == true);
+}
+
+TEST_CASE("allowed scenario", "[lic10]") {
+    Parameters_t params;
+    params.E_PTS = 2;
+    params.F_PTS = 2;
+    params.NUMPOINTS = 8; 
+    params.AREA1 = 20;
+    params.X = new double[8]{100, 0, 2, 0, 1, 12, 50, 2};
+    params.Y = new double[8]{0, 1, 3, 100, 0, 32, 50, 2};
+
+    REQUIRE(lic10(params) == true);
+}
+
 // Tests for LIC 14
 TEST_CASE("E_PTS and F_PTS too small", "[lic14]") {
     Parameters_t params;
