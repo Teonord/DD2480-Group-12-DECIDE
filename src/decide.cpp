@@ -1,5 +1,6 @@
 #include "../include/decide.hpp"
-#include <iostream>
+#include <array>
+
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
@@ -539,12 +540,55 @@ bool lic14(Parameters_t params){
      if(a1 && a2) return true;
      return false;
 }
+/** generatePreliminaryUnlockingMatrix
+ * This code generates the PUV matrix of bools, which is based on the LCM and the CMV. Depending on which
+ * logical operator is on a spot in the LCM, the program will check the CMV to know whether the output matrix
+ * should have TRUE or FALSE on that location. For LCM[x][y] NOTUSED means the result will always be true. ORR means 
+ * that the returned [x][y] will be true if either CMV[x] or CMV[y] is true. ANDD means that the returned [x][y] will
+ * be true if both CMV[x] and CMV[y] is true. Points where x == y are always true.
+ *
+ * @param CMV Conditions Met Vector, vector containing the LCMs that are fulfilled
+ * @param LCM Logical Connector Matrix, a 15x15 symmetrical matrix which contains logical operators
+ *            to decide the resulting bool in the returned matrix
+ * 
+ * @return boolean matrix: 15x15 symmetrical matrix where each point is true or false depending
+ *         on the combination of the CMV and the LCM. Diagonal is always true.
+ */
+std::array<std::array<bool, 15>, 15> generatePreliminaryUnlockingMatrix(std::array<bool, 15> CMV, std::array<std::array<Connectors, 15>, 15> LCM) {
+    std::array<std::array<bool, 15>, 15> retMatrix;
+    for (int y = 0; y < 15; y++) {
+        for (int x = 0; x < 15; x++) {
+            if (x == y) {
+                retMatrix[y][x] = true;
+                continue;
+            }
+
+            switch (LCM[y][x])
+            {
+            case NOTUSED:
+                retMatrix[y][x] = true;
+                break;
+            
+            case ORR:
+                if(CMV[x] || CMV[y]) retMatrix[y][x] = true;
+                else retMatrix[y][x] = false;
+                break;
+            
+            case ANDD:
+                if(CMV[x] && CMV[y]) retMatrix[y][x] = true;
+                else retMatrix[y][x] = false;
+                break;
+            }
+        }
+    }
+    return retMatrix;
+}
 
 /** launchDecision
  * This code checks whether launch should go ahead or not. Launch is allowed when all
  * objects in FUV is true, otherwise it is not. 
  *
- * @param *FUV Final Unlocking Vector, all indices have to be true to return true
+ * @param FUV Final Unlocking Vector, all indices have to be true to return true
  * 
  * @return boolean: true if and only if all indices in FUV are true. 
  */

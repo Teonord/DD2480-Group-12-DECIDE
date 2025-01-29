@@ -1064,6 +1064,89 @@ TEST_CASE("ok scenario", "[lic14]") {
     REQUIRE(lic14(params) == true);
 }
 
+TEST_CASE("LCM is all NOTUSED", "[generatePreliminaryUnlockingMatrix]") {
+    std::array<std::array<Connectors, 15>, 15> LCM;
+    for (int i = 0; i < 15; i++) {
+        for (int j = 0; j < 15; j++) {
+            LCM[i][j] = NOTUSED;
+        }
+    }
+    std::array<bool, 15> CMV = {false, false, false, true, false, false, false, false, true, false, false, false, false, true, false};
+
+    std::array<std::array<bool, 15>, 15> PUM = generatePreliminaryUnlockingMatrix(CMV, LCM);
+
+    for (int i = 0; i < 15; i++) {
+        for (int j = 0; j < 15; j++) {
+            REQUIRE(PUM[i][j] == true);
+        }
+    }
+}
+
+TEST_CASE("LCM is all ANDD", "[generatePreliminaryUnlockingMatrix]") {
+    std::array<std::array<Connectors, 15>, 15> LCM;
+    for (int i = 0; i < 15; i++) {
+        for (int j = 0; j < 15; j++) {
+            LCM[i][j] = ANDD;
+        }
+    }
+    std::array<bool, 15> CMV = {false, false, false, false, false, false, false, false, false, false, true, true, true, true, true};
+
+    std::array<std::array<bool, 15>, 15> PUM = generatePreliminaryUnlockingMatrix(CMV, LCM);
+
+    for (int i = 0; i < 15; i++) {
+        for (int j = 0; j < 15; j++) {
+            if (i == j) REQUIRE(PUM[i][j] == true);
+            else if (i >= 10 && j >= 10) REQUIRE(PUM[i][j] == true);
+            else REQUIRE(PUM[i][j] == false);
+        }
+    }
+}
+
+TEST_CASE("LCM is all ORR", "[generatePreliminaryUnlockingMatrix]") {
+    std::array<std::array<Connectors, 15>, 15> LCM;
+    for (int i = 0; i < 15; i++) {
+        for (int j = 0; j < 15; j++) {
+            LCM[i][j] = ORR;
+        }
+    }
+    std::array<bool, 15> CMV = {false, false, false, false, false, false, false, false, false, false, true, true, true, true, true};
+
+    std::array<std::array<bool, 15>, 15> PUM = generatePreliminaryUnlockingMatrix(CMV, LCM);
+
+    for (int i = 0; i < 15; i++) {
+        for (int j = 0; j < 15; j++) {
+            if (i == j) REQUIRE(PUM[i][j] == true);
+            else if (i >= 10 || j >= 10) REQUIRE(PUM[i][j] == true);
+            else REQUIRE(PUM[i][j] == false);
+        }
+    }
+}
+
+// Sets x0 to ORR and x1 to ANDD. CMV is true 10 and above. x0 will be true when y is 0 or 10 and above. x1 will always be false as CMV[1] is false (except when x == y).
+TEST_CASE("LCM is mixed", "[generatePreliminaryUnlockingMatrix]") {
+    std::array<std::array<Connectors, 15>, 15> LCM;
+    for (int i = 0; i < 15; i++) {
+        LCM[i][0] = ORR;
+        LCM[i][1] = ANDD;
+        for (int j = 2; j < 15; j++) {
+            LCM[i][j] = NOTUSED;
+        }
+    }
+    std::array<bool, 15> CMV = {false, false, false, false, false, false, false, false, false, false, true, true, true, true, true};
+
+    std::array<std::array<bool, 15>, 15> PUM = generatePreliminaryUnlockingMatrix(CMV, LCM);
+
+    for (int i = 0; i < 15; i++) {
+        if (i == 0 || i >= 10) REQUIRE(PUM[i][0] == true);
+        else REQUIRE(PUM[i][0] == false);
+
+        if (i == 1) REQUIRE(PUM[i][1] == true);
+        else REQUIRE(PUM[i][1] == false);
+
+        for (int j = 2; j < 15; j++) REQUIRE(PUM[i][j] == true);
+    }
+}
+
 TEST_CASE("FUV is all false", "[launchDecision]") {
     bool testFUV[15] = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
 
