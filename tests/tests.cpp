@@ -248,6 +248,61 @@ TEST_CASE("area big enough", "[lic3]") {
     REQUIRE(lic3(params) == true);
 }
 
+// Tests for LIC 4
+TEST_CASE("Quad outside of specs", "[lic4]") {
+    Parameters_t params;
+    params.NUMPOINTS = 5;
+    params.QUADS = 0;
+    params.X = new double[5]{0, 10, 15, 20, 43};
+    params.Y = new double[5]{5, 0, 10, 13, 2};
+
+    REQUIRE(lic4(params) == false);
+}
+
+TEST_CASE("Want > 3 quads, but only have 1", "[lic4]") {
+    Parameters_t params;
+    params.NUMPOINTS = 5;
+    params.QUADS = 3;
+    params.Q_PTS = 3;
+    params.X = new double[5]{1, 2, 3, 4, 4};
+    params.Y = new double[5]{1, 2, 3, 4, 4};
+
+    REQUIRE(lic4(params) == false);
+}
+
+TEST_CASE("Want > 3 quads, have 4", "[lic4]") {
+    Parameters_t params;
+    params.NUMPOINTS = 4;
+    params.QUADS = 3;
+    params.Q_PTS = 4;
+    params.X = new double[4]{1, -2, -1, 4};
+    params.Y = new double[4]{1, 2, -1, -4};
+
+    REQUIRE(lic4(params) == true);
+}
+
+TEST_CASE("Want > 3 quads, have 3 on xy axis and one in quad4", "[lic4]") {
+    Parameters_t params;
+    params.NUMPOINTS = 5;
+    params.QUADS = 3;
+    params.Q_PTS = 4;
+    params.X = new double[4]{0, -1, 0, 4};
+    params.Y = new double[4]{1, 0, -1, -4};
+
+    REQUIRE(lic4(params) == true);
+}
+
+TEST_CASE("Want > 3 quads, have 4 in the middle", "[lic4]") {
+    Parameters_t params;
+    params.NUMPOINTS = 6;
+    params.QUADS = 3;
+    params.Q_PTS = 4;
+    params.X = new double[6]{0, 0, 4, -4, -1, 0};
+    params.Y = new double[6]{0, 0, -4, 4, -1, 0};
+
+    REQUIRE(lic4(params) == true);
+}
+
 // Tests for LIC 5
 
 TEST_CASE("LIC 5: Not enough points", "[lic5]") {
