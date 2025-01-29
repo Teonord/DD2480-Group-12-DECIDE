@@ -152,6 +152,38 @@ bool lic3(Parameters_t params) {
 
 // LIC 4
 
+bool lic4(Parameters_t params){
+
+    if(params.QUADS < 1 || params.QUADS > 3 || params.Q_PTS < 2 || params.Q_PTS > params.NUMPOINTS) return false;
+
+    for(int j = 0; j <= params.NUMPOINTS - params.Q_PTS; j++){
+        bool quad[4] = {false, false, false, false};
+        for(int i = j; i < j + params.Q_PTS; i++){
+            if(params.Y[i] >= 0){
+                if(params.X[i] >= 0){
+                    quad[0] = true;
+                } else {
+                    quad[1] = true;
+                }
+            } else {
+                if(params.X[i] <= 0){
+                    quad[2] = true;
+                } else {
+                    quad[3] = true;
+                }
+            }
+        }
+        int count = 0;
+        for(int i = 0; i < 4; i++){
+            if(quad[i]) count++;
+        }
+        if(params.QUADS < count) return true;
+    }
+
+    return false;
+        
+}
+
 /* LIC 5
  *
  * This code solves LIC 5, which is true if there exists at least one pair of consecutive data points
