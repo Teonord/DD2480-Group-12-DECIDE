@@ -659,6 +659,73 @@ TEST_CASE("appropriate scenario, should be allowed", "[lic11]") {
     REQUIRE(lic11(params) == true);
 }
 
+// Tests for LIC 12
+
+TEST_CASE("lic12 too few points", "[lic12]") {
+    Parameters_t params;
+    params.NUMPOINTS = 2;
+    params.K_PTS = 1;
+    params.LENGTH1 = 1;
+    params.LENGTH2 = 1;
+    params.X = new double[2]{1, 2};
+    params.Y = new double[2]{2, 1};
+
+
+    REQUIRE(lic12(params) == false);
+}
+
+TEST_CASE("fulfill L2 but not L1", "[lic12]") {
+    Parameters_t params;
+    params.NUMPOINTS = 3;
+    params.K_PTS = 1;
+    params.LENGTH1 = 1;
+    params.LENGTH2 = 1;
+    params.X = new double[3]{1, 1, 1};
+    params.Y = new double[3]{1, 1, 1};
+
+
+    REQUIRE(lic12(params) == false);
+}
+
+TEST_CASE("fulfill L1 but not L2", "[lic12]") {
+    Parameters_t params;
+    params.NUMPOINTS = 3;
+    params.K_PTS = 1;
+    params.LENGTH1 = 1;
+    params.LENGTH2 = 1;
+    params.X = new double[3]{1, 5, 10};
+    params.Y = new double[3]{1, 5, 10};
+
+
+    REQUIRE(lic12(params) == false);
+}
+
+TEST_CASE("fulfill both", "[lic12]") {
+    Parameters_t params;
+    params.NUMPOINTS = 3;
+    params.K_PTS = 1;
+    params.LENGTH1 = 1;
+    params.LENGTH2 = 5;
+    params.X = new double[3]{1, 1, 3};
+    params.Y = new double[3]{1, 1, 3};
+
+
+    REQUIRE(lic12(params) == true);
+}
+
+TEST_CASE("fulfill in different", "[lic12]") {
+    Parameters_t params;
+    params.NUMPOINTS = 6;
+    params.K_PTS = 2;
+    params.LENGTH1 = 5;
+    params.LENGTH2 = 1.5;
+    params.X = new double[6]{1, 1, 1, 2, 4, 8};
+    params.Y = new double[6]{1, 1, 1, 1, 1, 1};
+
+
+    REQUIRE(lic12(params) == true);
+}
+
 // Tests for LIC 13
 
 TEST_CASE("A_PTS less than 1", "[lic13]") {

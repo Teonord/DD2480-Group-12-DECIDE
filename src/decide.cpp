@@ -366,7 +366,46 @@ bool lic11(Parameters_t params) {
     return false;
 }
 
-// LIC 12
+/**  LIC 12
+ *
+ * This function checks whether there are a pair of points separated by K_PTS that are further than LENGTH1
+ * distance from eachother. It also checks whether there are a pair of points separated by K_PTS that are 
+ * closer than LENGTH2 distance from eachother. These may be the same or different points. Both criteria
+ * have to be filled for the function to return true.
+ *
+ * @param params A Parameters_t object with the following important fields:
+ *              - K_PTS: The number of consecutive intervening points between the first point and the second point.
+ *              - NUMPOINTS: The total number of points.
+ *              - LENGTH1: The length that two points must be more distant than.
+ *              - LENGTH2: The length that two points must be less distant than.
+ *              - X: An array of X-coordinates of the points.
+ *              - Y: An array of Y-coordinates of the points.
+ *
+ * @return boolean: true if both criteria stated above are filled, otherwise false. 
+ */
+ bool lic12(Parameters_t params) {
+
+    // Base Cases
+    if(params.NUMPOINTS < 3 || params.K_PTS < 1 || params.LENGTH1 < 0 || params.LENGTH2 < 0) return false;
+
+    bool gtL1 = false;
+    bool gtL2 = false;
+
+    for (int i = 0; i < params.NUMPOINTS - params.K_PTS - 1; i++) {
+        double length = hypot(params.X[i + params.K_PTS + 1] - params.X[i], params.Y[i + params.K_PTS + 1] - params.Y[i]);
+        if (doubleCompare(length, params.LENGTH1) == GT) {
+            gtL1 = true;
+            if (gtL2) return true;
+        }
+
+        if (doubleCompare(length, params.LENGTH2) == LT) {
+            gtL2 = true;
+            if (gtL1) return true;
+        }
+    }
+
+    return false;
+ }
 
 /**  LIC 13
  * 
