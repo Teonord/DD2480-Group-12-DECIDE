@@ -544,11 +544,11 @@ bool lic14(Parameters_t params){
  * This code checks whether launch should go ahead or not. Launch is allowed when all
  * objects in FUV is true, otherwise it is not. 
  *
- * @param *FUV Final Unlocking Vector, all indices have to be true to return true
+ * @param FUV Final Unlocking Vector, all indices have to be true to return true
  * 
  * @return boolean: true if and only if all indices in FUV are true. 
  */
-bool launchDecision(bool FUV[15]) {
+bool launchDecision(std::array<bool, 15> FUV) {
     bool launch = true;
     for (int i = 0; i < 15; i++) {
         if (!FUV[i]) {

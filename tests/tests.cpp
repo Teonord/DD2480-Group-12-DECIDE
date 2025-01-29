@@ -1065,19 +1065,19 @@ TEST_CASE("ok scenario", "[lic14]") {
 }
 
 TEST_CASE("FUV is all false", "[launchDecision]") {
-    bool testFUV[15] = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
+    std::array<bool, 15> testFUV = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
 
     REQUIRE(launchDecision(testFUV) == false);
 }
 
 TEST_CASE("FUV is all true", "[launchDecision]") {
-    bool testFUV[15] = {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
+    std::array<bool, 15> testFUV = {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
 
     REQUIRE(launchDecision(testFUV) == true);
 }
 
 TEST_CASE("FUV is mixed", "[launchDecision]") {
-    bool testFUV[15] = {true, true, true, true, true, true, true, true, false, true, true, true, true, false, true};
+    std::array<bool, 15> testFUV = {true, true, true, true, true, true, true, true, false, true, true, true, true, false, true};
 
     REQUIRE(launchDecision(testFUV) == false);
 }

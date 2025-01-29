@@ -2,6 +2,7 @@
 #define DECIDE_H
 
 #include <cmath>
+#include <array>
 
 static const double PI = 3.1415926535;
 
@@ -89,6 +90,6 @@ bool lic13(Parameters_t params);
 bool lic14(Parameters_t params);
 
 // Launch Decision
-bool launchDecision(bool FUV[15]);
+bool launchDecision(std::array<bool, 15> FUV);
 
 #endif
