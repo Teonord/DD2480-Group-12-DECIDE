@@ -632,3 +632,29 @@ bool launchDecision(std::array<bool, 15> FUV) {
     }
     return launch;
 }
+
+bool decide(Parameters_t params, std::array<std::array<Connectors, 15>, 15> LCM, std::array<bool, 15> PUV) {
+    std::array<bool, 15> CMV;
+
+    CMV[0] = isConsecDistGTLen(params);
+    CMV[1] = lic1(params);
+    CMV[2] = lic2(params);
+    CMV[3] = lic3(params);
+    CMV[4] = lic4(params);
+    CMV[5] = lic5(params);
+    CMV[6] = isDistFromLine(params);
+    CMV[7] = lic7(params);
+    CMV[8] = sepPointsContainedInCircle(params);
+    CMV[9] = isAngleWithinThreshold(params);
+    CMV[10] = lic10(params);
+    CMV[11] = lic11(params);
+    CMV[12] = lic12(params);
+    CMV[13] = lic13(params);
+    CMV[14] = lic14(params);
+
+    std::array<std::array<bool, 15>, 15> PUM = generatePreliminaryUnlockingMatrix(CMV, LCM);
+
+    std::array<bool, 15> FUV = generateFinalUnlockingVector(PUM, PUV);
+
+    return launchDecision(FUV);
+}

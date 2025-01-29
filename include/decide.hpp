@@ -42,7 +42,7 @@ typedef struct {
 Comptype doubleCompare (double a, double b);
 
 // The goal DECIDE function. 
-void decide();
+bool decide(Parameters_t params, std::array<std::array<Connectors, 15>, 15> LCM, std::array<bool, 15> PUV);
 
 // LIC 0
 bool isConsecDistGTLen(Parameters_t params);
