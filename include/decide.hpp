@@ -2,6 +2,7 @@
 #define DECIDE_H
 
 #include <cmath>
+#include <array>
 
 static const double PI = 3.1415926535;
 
@@ -87,6 +88,9 @@ bool lic13(Parameters_t params);
 
 // LIC 14
 bool lic14(Parameters_t params);
+
+// Generate PUV
+std::array<std::array<bool, 15>, 15> generatePreliminaryUnlockingMatrix(std::array<bool, 15> CMV, std::array<std::array<Connectors, 15>, 15> LCM);
 
 // Launch Decision
 bool launchDecision(bool FUV[15]);
