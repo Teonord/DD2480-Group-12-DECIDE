@@ -584,6 +584,36 @@ std::array<std::array<bool, 15>, 15> generatePreliminaryUnlockingMatrix(std::arr
     return retMatrix;
 }
 
+/** generateFinalUnlockingVector 
+ * This code generates the vector that will make the decision launch/no launch from the combination of the PUM and a Preliminary
+ * Unlocking Vector which decides which of the rows in the PUM that are important for the launch decision. If an index in PUV is
+ * false, the whole row of the same index in PUM is ignored and index in FUV is true. If index in PUV is true, then whole row in
+ * PUM has to be true for the FUV index to be true.
+ * 
+ * @param PUM Preliminary Unlocking Matrix, generated from the combination of the solved LICs and the LCM
+ * @param PUV Preliminary Unlocking Vector, decides which rows of the PUM that should be taken account of.alignas
+ * 
+ * @return Final Unlocking Vector, 15 index vector of bools that will ultimately decide launch/no launch
+*/
+std::array<bool, 15> generateFinalUnlockingVector(std::array<std::array<bool, 15>, 15> PUM, std::array<bool, 15> PUV) {
+    std::array<bool, 15> FUV; 
+    for (int i = 0; i < 15; i++) {
+        if (PUV[i] == false) {
+            FUV[i] = true;
+            continue;
+        }
+        bool allTrue = true;
+        for (int j = 0; j < 15; j++) {
+            if (PUM[i][j] == false) {
+                allTrue = false;
+                break;
+            }
+        }
+        FUV[i] = allTrue;
+    }
+    return FUV;
+}
+
 /** launchDecision
  * This code checks whether launch should go ahead or not. Launch is allowed when all
  * objects in FUV is true, otherwise it is not. 

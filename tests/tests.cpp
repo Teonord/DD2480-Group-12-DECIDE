@@ -1147,6 +1147,72 @@ TEST_CASE("LCM is mixed", "[generatePreliminaryUnlockingMatrix]") {
     }
 }
 
+TEST_CASE("all PUV is false", "[generateFinalUnlockingVector]") {
+    std::array<std::array<bool, 15>, 15> PUM;
+    for (int i = 0; i < 15; i++) {
+        for (int j = 0; j < 15; j++) {
+            PUM[i][j] = false;
+        }
+    }
+    std::array<bool, 15> PUV = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
+
+    std::array<bool, 15> FUV = generateFinalUnlockingVector(PUM, PUV);
+
+    for (int i = 0; i < 15; i++) {
+        REQUIRE(FUV[i] == true);
+    }
+}
+
+TEST_CASE("all PUV true, PUM false", "[generateFinalUnlockingVector]") {
+    std::array<std::array<bool, 15>, 15> PUM;
+    for (int i = 0; i < 15; i++) {
+        for (int j = 0; j < 15; j++) {
+            PUM[i][j] = false;
+        }
+    }
+    std::array<bool, 15> PUV = {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
+
+    std::array<bool, 15> FUV = generateFinalUnlockingVector(PUM, PUV);
+
+    for (int i = 0; i < 15; i++) {
+        REQUIRE(FUV[i] == false);
+    }
+}
+
+TEST_CASE("all PUV and PUM true", "[generateFinalUnlockingVector]") {
+    std::array<std::array<bool, 15>, 15> PUM;
+    for (int i = 0; i < 15; i++) {
+        for (int j = 0; j < 15; j++) {
+            PUM[i][j] = true;
+        }
+    }
+    std::array<bool, 15> PUV = {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
+
+    std::array<bool, 15> FUV = generateFinalUnlockingVector(PUM, PUV);
+
+    for (int i = 0; i < 15; i++) {
+        REQUIRE(FUV[i] == true);
+    }
+}
+
+TEST_CASE("one exception in each row", "[generateFinalUnlockingVector]") {
+    std::array<std::array<bool, 15>, 15> PUM;
+    for (int i = 0; i < 15; i++) {
+        for (int j = 0; j < 14; j++) {
+            PUM[i][j] = true;
+        }
+        PUM[i][14] = false;
+    }
+
+    std::array<bool, 15> PUV = {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
+
+    std::array<bool, 15> FUV = generateFinalUnlockingVector(PUM, PUV);
+
+    for (int i = 0; i < 15; i++) {
+        REQUIRE(FUV[i] == false);
+    }
+}
+
 TEST_CASE("FUV is all false", "[launchDecision]") {
     bool testFUV[15] = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
 
