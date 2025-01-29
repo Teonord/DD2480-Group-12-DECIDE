@@ -93,6 +93,6 @@ bool lic14(Parameters_t params);
 std::array<std::array<bool, 15>, 15> generatePreliminaryUnlockingMatrix(std::array<bool, 15> CMV, std::array<std::array<Connectors, 15>, 15> LCM);
 
 // Launch Decision
-bool launchDecision(bool FUV[15]);
+bool launchDecision(std::array<bool, 15> FUV);
 
 #endif

@@ -592,7 +592,7 @@ std::array<std::array<bool, 15>, 15> generatePreliminaryUnlockingMatrix(std::arr
  * 
  * @return boolean: true if and only if all indices in FUV are true. 
  */
-bool launchDecision(bool FUV[15]) {
+bool launchDecision(std::array<bool, 15> FUV) {
     bool launch = true;
     for (int i = 0; i < 15; i++) {
         if (!FUV[i]) {
