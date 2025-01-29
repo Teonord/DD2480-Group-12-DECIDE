@@ -210,6 +210,22 @@ bool isDistFromLine(Parameters_t params) {
 }
 
 // LIC 7
+/* 
+ * This code solves LIC 7, it iterates through pairs of points separated by K_PTS consequtive points until it finds 
+ * two points with a distance larger than LENGTH1 between them and returns true, or untill it has iterated 
+ * through all possible pairs of points separated by K_PTS and returns false.
+ */
+ bool lic7(Parameters_t params) {
+    if(params.LENGTH1 <= 0 || params.NUMPOINTS <3 || params.K_PTS < 1 || params.K_PTS > params.NUMPOINTS - 2) return false;
+
+    for(int i = 0; i < params.NUMPOINTS - params.K_PTS - 1; i++){
+        // https://www.khanacademy.org/math/geometry/hs-geo-analytic-geometry/hs-geo-distance-and-midpoints/v/distance-formula
+        // d=√((x_2-x_1)²+(y_2-y_1)²)
+        double dst = sqrt(pow(params.X[i + params.K_PTS + 1] - params.X[i], 2) + pow(params.Y[i + params.K_PTS + 1] - params.Y[i], 2));
+        if(doubleCompare(dst, params.LENGTH1) == GT) return true;
+    }
+    return false;
+ }
 
 /* LIC 8
  *

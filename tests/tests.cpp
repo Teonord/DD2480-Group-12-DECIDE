@@ -377,8 +377,96 @@ TEST_CASE("line w/ negative doubles", "[isDistFromLine]") {
     REQUIRE(isDistFromLine(params) == false);
 }
 
-// LIC 8
+// Tests for LIC 9
+TEST_CASE("not enough points (NUMPOINTS)", "[lic7]") {
+    Parameters_t params;
+    params.NUMPOINTS = 2;
+    params.K_PTS = 1;
+    params.LENGTH1 = 1;
+    params.X = new double[2]{1, 2};
+    params.Y = new double[2]{2, 1};
 
+    REQUIRE(lic7(params) == false);
+}
+
+TEST_CASE("too small value (K_PTS)", "[lic7]") {
+    Parameters_t params;
+    params.NUMPOINTS = 3;
+    params.K_PTS = 0;
+    params.LENGTH1 = 1;
+    params.X = new double[3]{1, 2, 3};
+    params.Y = new double[3]{3, 2, 1};
+
+    REQUIRE(lic7(params) == false);
+}
+
+TEST_CASE("too large value (K_PTS)", "[lic7]") {
+    Parameters_t params;
+    params.NUMPOINTS = 3;
+    params.K_PTS = 2;
+    params.LENGTH1 = 0;
+    params.X = new double[3]{1, 2, 3};
+    params.Y = new double[3]{3, 2, 1};
+
+    REQUIRE(lic7(params) == false);
+}
+
+TEST_CASE("too small value (LENGTH1)", "[lic7]") {
+    Parameters_t params;
+    params.NUMPOINTS = 3;
+    params.K_PTS = 0;
+    params.LENGTH1 = 1;
+    params.X = new double[3]{1, 2, 3};
+    params.Y = new double[3]{3, 2, 1};
+
+    REQUIRE(lic7(params) == false);
+}
+
+TEST_CASE("distance = LENGTH1, not allowed", "[lic7]") {
+    Parameters_t params;
+    params.NUMPOINTS = 3;
+    params.K_PTS = 1;
+    params.LENGTH1 = 1;
+    params.X = new double[3]{1, 2, 1};
+    params.Y = new double[3]{2, 2, 1};
+
+    REQUIRE(lic7(params) == false);
+}
+
+TEST_CASE("negative values, not allowed", "[lic7]") {
+    Parameters_t params;
+    params.NUMPOINTS = 3;
+    params.K_PTS = 1;
+    params.LENGTH1 = 1;
+    params.X = new double[3]{1, 2, 1};
+    params.Y = new double[3]{-2, 2, -1};
+
+    REQUIRE(lic7(params) == false);
+}
+
+TEST_CASE("negative values, allowed", "[lic7]") {
+    Parameters_t params;
+    params.NUMPOINTS = 3;
+    params.K_PTS = 1;
+    params.LENGTH1 = 1;
+    params.X = new double[3]{1, 2, 1};
+    params.Y = new double[3]{-1, 2, 1};
+
+    REQUIRE(lic7(params) == true);
+}
+
+TEST_CASE("allowed testcase", "[lic7]") {
+    Parameters_t params;
+    params.NUMPOINTS = 5;
+    params.K_PTS = 1;
+    params.LENGTH1 = 5;
+    params.X = new double[5]{1, 10, 1, 19, 0};
+    params.Y = new double[5]{10, 2, 7, 6, 0};
+
+    REQUIRE(lic7(params) == true);
+}
+
+// LIC 8
 TEST_CASE("points within circle", "[sepPointsCointainedInCircle]") {
     Parameters_t params;
     params.NUMPOINTS = 5;
