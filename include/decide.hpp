@@ -92,6 +92,9 @@ bool lic14(Parameters_t params);
 // Generate PUV
 std::array<std::array<bool, 15>, 15> generatePreliminaryUnlockingMatrix(std::array<bool, 15> CMV, std::array<std::array<Connectors, 15>, 15> LCM);
 
+// Generate FUV
+std::array<bool, 15> generateFinalUnlockingVector(std::array<std::array<bool, 15>, 15> PUM, std::array<bool, 15> PUV);
+
 // Launch Decision
 bool launchDecision(std::array<bool, 15> FUV);
 
