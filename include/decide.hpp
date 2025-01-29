@@ -55,6 +55,9 @@ bool lic2(Parameters_t params);
 // LIC 3
 bool lic3(Parameters_t params);
 
+// LIC 4
+bool lic4(Parameters_t params);
+
 // LIC 5
 bool lic5(Parameters_t params);
 
