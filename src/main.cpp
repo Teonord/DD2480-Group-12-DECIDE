@@ -1,6 +1,22 @@
 #include "../include/decide.hpp"
 #include <iostream>
 
+/** main function for DECIDE
+ * 
+ * Function that decides wether to go ahead with launch based on parameters that
+ * are selectable within the function itself.
+ *  
+ * 15 LIC's are used to create a Conditions Met Vector which is applied with the
+ * Logical Connector Matrix to create a Preliminary Unlocking matrix. This matrix
+ * is used together with the Preliminary Unlocking Vector to generate the final
+ * unlocking vector, which has to be all true to return true. If this returns true,
+ * launch can go ahead, otherwise not.
+ * 
+ * @param argc unused.
+ * @param argv unused.
+ * 
+ * @return 0 on completed program. 
+ */
 int main(int argc, char** argv) {
 
   Parameters_t params;
