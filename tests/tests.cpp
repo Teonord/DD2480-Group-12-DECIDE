@@ -1231,6 +1231,8 @@ TEST_CASE("FUV is mixed", "[launchDecision]") {
     REQUIRE(launchDecision(testFUV) == false);
 }
 
+// Tests for decide function 
+
 TEST_CASE("launch all true", "[decide]") {
     Parameters_t params;
     params.NUMPOINTS = 7;

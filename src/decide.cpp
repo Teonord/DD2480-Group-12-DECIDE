@@ -633,6 +633,23 @@ bool launchDecision(std::array<bool, 15> FUV) {
     return launch;
 }
 
+/** decide
+ * 
+ * Function that decides wether to go ahead with launch based on input parameters. 
+ * 15 LIC's are used to create a Conditions Met Vector which is applied with the
+ * Logical Connector Matrix to create a Preliminary Unlocking Matrix. This matrix
+ * is used together with the Preliminary Unlocking Vector to generate the final
+ * unlocking vector, which has to be all true to return true. If this returns true,
+ * launch can go ahead, otherwise not. 
+* 
+ * @param params Parameters for launch including number of points and the coordinates of these.
+ * @param LCM Logical Connector Matrix containing the logical connectors to connect indices of
+ *            the CMV to be able to generate the PUM.
+ * @param PUV Preliminary Unlocking Vector to decide which rows of the PUM to consider when
+ *  	      generating the Final Unlocking Vector.
+ * 
+ * @return true if launch is go ahead, false otherwise.
+ */
 bool decide(Parameters_t params, std::array<std::array<Connectors, 15>, 15> LCM, std::array<bool, 15> PUV) {
     std::array<bool, 15> CMV;
 
