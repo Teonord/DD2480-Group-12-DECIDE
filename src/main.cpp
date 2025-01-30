@@ -3,7 +3,7 @@
 #include <iostream>
 
 int main(int argc, char** argv) {
-  //std::cout << "Starting program...\n"; 
+  //std::cout << "Starting program...\n"; // Debugging Step
   // Step 1: Initialize Parameters
   Parameters_t params;
   params.LENGTH1 = 1.0;
@@ -26,8 +26,7 @@ int main(int argc, char** argv) {
   params.X = new double[8]{-100, 0, 2, 0, 1, 12, -50, 2};
   params.Y = new double[8]{0, -1, 3, 100, 0, 32, 50, -2};
 
-  //std::cout << "Parameters initialized.\n";
-
+  //std::cout << "Parameters initialized.\n"; // Debugging Step
   // Step 2: Compute CMV
   std::array<bool, 15> CMV = {false};
   CMV[0] = isConsecDistGTLen(params);
@@ -47,7 +46,6 @@ int main(int argc, char** argv) {
   CMV[14] = lic14(params);
 
   //std::cout << "CMV Computed\n"; // Debugging Step
-
   // Step 3: Initialize Logical Connector Matrix (LCM)
   std::array<std::array<Connectors, 15>, 15> LCM;
   for (int i = 0; i < 15; i++) {
@@ -57,13 +55,11 @@ int main(int argc, char** argv) {
   }
 
   //std::cout << "LCM Initialized\n"; // Debugging Step
-
   // Step 4: Initialize Preliminary Unlocking Vector (PUV)
   std::array<bool, 15> PUV;
   PUV.fill(true);
 
   //std::cout << "PUV Initialized\n"; // Debugging Step
-
   // Step 5: Compute Preliminary Unlocking Matrix (PUM)
   std::array<std::array<bool, 15>, 15> PUM;
   PUM = generatePreliminaryUnlockingMatrix(CMV, LCM);
