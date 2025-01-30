@@ -151,8 +151,22 @@ bool lic3(Parameters_t params) {
     return false;
 }
 
-// LIC 4
-
+/** LIC 4
+/*
+ * Checks if there are points in more quadrants than params.QUAD
+ *
+ * This function takes Q_PTS QUAD NUMPOINTS and a set points given in X Y (coordinates)
+ * It checks if there is Q_PTS consecutive points that are in more quadrants than the value QUAD
+ * If there exists such a sequence return true, otherwise return false.
+ * 
+ * @param params A Parameters_t object containing the following fields:
+ *               - NUMPOINTS: The total number of points.
+ *               - QUAD: Number of quadrants to 'beat'
+ *               - Q_PTS Number of consecutive points to check.
+ *               - X: An array of X-coordinates of the points.
+ *               - Y: An array of Y-coordinates of the points.
+ * @return bool True if Q_PTS consecutive points are in quadrants that are greater than QUAD
+ */
 bool lic4(Parameters_t params){
 
     if(params.QUADS < 1 || params.QUADS > 3 || params.Q_PTS < 2 || params.Q_PTS > params.NUMPOINTS) return false;
