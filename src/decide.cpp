@@ -1,5 +1,6 @@
 #include "../include/decide.hpp"
 #include <array>
+#include <iostream>
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -402,12 +403,12 @@ bool lic10(Parameters_t params){
      for(int i = 0; i < params.NUMPOINTS - params.E_PTS - params.F_PTS - 2; i++){
           int second = i + params.E_PTS + 1;
           int third = second + params.F_PTS + 1;
-          // determinant formula: https://www.cuemath.com/geometry/area-of-triangle-in-determinant-form/
+    // determinant formula: https://www.cuemath.com/geometry/area-of-triangle-in-determinant-form/
           double area = 0.5 * std::abs(
             params.X[i]*(params.Y[second] - params.Y[third]) + 
             params.X[second]*(params.Y[third]-params.Y[i]) + 
             params.X[third]*(params.Y[i]) - params.Y[second]);
-          if(doubleCompare(area, params.AREA1) == GT) return true;
+            if(doubleCompare(area, params.AREA1) == GT) return true;
      }
      return false;
 }
